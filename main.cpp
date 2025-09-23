@@ -23,7 +23,6 @@ constexpr float MAX_AMP           = 10.0f,
                 ORBIT_SPEED       = 5.0f;
 
 constexpr char BG_COLOUR[] = "#FFD1DC";
-constexpr char BG_COLOUR2[] = "#CCCCFF";
 constexpr Vector2 ORIGIN = { SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2 };
 constexpr Vector2 BASE_SIZE = { (float)SIZE, (float)SIZE };
 
@@ -126,7 +125,6 @@ void update() {
         gVelocity3 = -gVelocity3;
     }
     
-
     // rotation -> done on texture 2
     gAngleRotation += 500.0f * deltaTime * (gDirection == RIGHT ? 1 : -1);
     
@@ -144,7 +142,6 @@ void render()
     
     ClearBackground(ColorFromHex(BG_COLOUR));
     
-
     // whole texture (UV coordinates)
     Rectangle textureAreaChiikawa = {
         // top-left corner
