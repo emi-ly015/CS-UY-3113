@@ -27,9 +27,9 @@ constexpr char BG_COLOUR2[] = "#CCCCFF";
 constexpr Vector2 ORIGIN = { SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2 };
 constexpr Vector2 BASE_SIZE = { (float)SIZE, (float)SIZE };
 
-constexpr char CHIIKAWA_FP[] = "assets/game/chiikawa.png";
-constexpr char HACHIWARE_FP[] = "assets/game/hachiware.png";
-constexpr char USAGI_FP[] = "assets/game/usagi.png";
+constexpr char CHIIKAWA_FP[] = "assets/chiikawa.png";
+constexpr char HACHIWARE_FP[] = "assets/hachiware.png";
+constexpr char USAGI_FP[] = "assets/usagi.png";
 
 // Global Variables
 AppStatus gAppStatus   = RUNNING;
