@@ -8,7 +8,7 @@
 * Academic Misconduct.
 **/
 #include "CS3113/cs3113.h"
-#include <math.h>
+
 
 enum Direction { LEFT, RIGHT };
 
