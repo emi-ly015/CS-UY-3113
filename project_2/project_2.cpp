@@ -8,7 +8,7 @@
 * NYU School of Engineering Policies and Procedures on
 * Academic Misconduct.
 **/
-#include "../CS3113/cs3113.h"
+#include "CS3113/cs3113.h"
 
 enum BallCount {ONE = 1, TWO =2 , THREE = 3};
 
