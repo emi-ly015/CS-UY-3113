@@ -6,9 +6,9 @@ UNAME_S := $(shell uname -s)
 # ------------------------------------------------------------
 #  Source files
 # ------------------------------------------------------------
-# SRCS = animation_single_row.cpp CS3113/animation/*.cpp  # animation (single row)
+#SRCS = animation_single_row.cpp CS3113/animation/*.cpp  # animation (single row)
 # SRCS = animation_atlas.cpp CS3113/animation/*.cpp  # animation (several rows)
-SRCS = projects/project_2.cpp CS3113/*.cpp  # entities
+SRCS = project_3.cpp CS3113/*.cpp
 
 # ------------------------------------------------------------
 #  Target name
