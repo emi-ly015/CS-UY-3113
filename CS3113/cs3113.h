@@ -22,4 +22,5 @@ float GetLength(const Vector2 vector);
 Rectangle getUVRectangle(const Texture2D *texture, int index, int rows, int cols);
 void panCamera(Camera2D *camera, const Vector2 *targetPosition);
 
+
 #endif // CS3113_H

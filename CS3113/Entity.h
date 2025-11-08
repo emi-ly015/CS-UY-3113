@@ -1,11 +1,13 @@
 #ifndef ENTITY_H
 #define ENTITY_H
 
-#include "cs3113.h"
+#include "Map.h"
 
-enum Direction    { LEFT, RIGHT }; // for moving with acceleration
-enum EntityStatus { ACTIVE, INACTIVE };
-enum GameStatus   { ONGOING, FAILED, ACCOMPLISHED };
+enum Direction    { LEFT, UP, RIGHT, DOWN              }; // For walking
+enum EntityStatus { ACTIVE, INACTIVE                   };
+enum EntityType   { PLAYER, BLOCK, PLATFORM, NPC, EMPTY };
+enum AIType       { WANDERER, FOLLOWER                 };
+enum AIState      { WALKING, IDLE, FOLLOWING           };
 
 class Entity
 {
@@ -22,12 +24,16 @@ private:
     TextureType mTextureType;
     Vector2 mSpriteSheetDimensions;
     
+    std::map<Direction, std::vector<int>> mAnimationAtlas;
     std::vector<int> mAnimationIndices;
     Direction mDirection;
     int mFrameSpeed;
 
     int mCurrentFrameIndex = 0;
     float mAnimationTime = 0.0f;
+
+    bool mIsJumping = false;
+    float mJumpingPower = 0.0f;
 
     int mSpeed;
     float mAngle;
@@ -37,25 +43,20 @@ private:
     bool mIsCollidingRight  = false;
     bool mIsCollidingLeft   = false;
 
-
-    // variables that will allow for moving platforms
-    bool mIsMovingPlatform = false,
-         mMovingRight = true;
-
-    float mMoveSpeed = 0.0f,
-          mStartPoint = 0.0f,
-          mMoveDistance = 0.0f;
-
-
-    // track the collided entity
-    Entity* mCollidedEntity = nullptr;
-
     EntityStatus mEntityStatus = ACTIVE;
-    GameStatus mGameStatus = ONGOING;
+    EntityType   mEntityType;
+
+    AIType  mAIType;
+    AIState mAIState;
 
     bool isColliding(Entity *other) const;
+
     void checkCollisionY(Entity *collidableEntities, int collisionCheckCount);
+    void checkCollisionY(Map *map);
+
     void checkCollisionX(Entity *collidableEntities, int collisionCheckCount);
+    void checkCollisionX(Map *map);
+    
     void resetColliderFlags() 
     {
         mIsCollidingTop    = false;
@@ -64,46 +65,44 @@ private:
         mIsCollidingLeft   = false;
     }
 
-
-    // fuel mechanics
-    float mFuel = 100.0f;
-    // how much fuel is lost per second
-    float mFuelRate = 8.0f;
-
     void animate(float deltaTime);
+    void AIActivate(Entity *target);
+    void AIWander();
+    void AIFollow(Entity *target);
 
 public:
     static constexpr int   DEFAULT_SIZE          = 250;
     static constexpr int   DEFAULT_SPEED         = 200;
     static constexpr int   DEFAULT_FRAME_SPEED   = 14;
     static constexpr float Y_COLLISION_THRESHOLD = 0.5f;
-    static constexpr float ACCELERATION_OF_GRAVITY = 15.0f;
-    // diagonal drift
-    const float drift = 0.99;
-
 
     Entity();
-    Entity(Vector2 position, Vector2 scale, const char *textureFilepath);
+    Entity(Vector2 position, Vector2 scale, const char *textureFilepath, 
+        EntityType entityType);
     Entity(Vector2 position, Vector2 scale, const char *textureFilepath, 
         TextureType textureType, Vector2 spriteSheetDimensions, 
-        std::vector<int>animationAtlas);
+        std::map<Direction, std::vector<int>> animationAtlas, 
+        EntityType entityType);
     ~Entity();
 
-    void update(float deltaTime, Entity *collidableEntities, int collisionCheckCount);
+    void update(float deltaTime, Entity *player, Map *map, 
+        Entity *collidableEntities, int collisionCheckCount);
     void render();
     void normaliseMovement() { Normalise(&mMovement); }
 
+    void jump()       { mIsJumping = true;  }
     void activate()   { mEntityStatus  = ACTIVE;   }
     void deactivate() { mEntityStatus  = INACTIVE; }
+    void displayCollider();
 
     bool isActive() { return mEntityStatus == ACTIVE ? true : false; }
 
+    void moveUp()    { mMovement.y = -1; mDirection = UP;    }
+    void moveDown()  { mMovement.y =  1; mDirection = DOWN;  }
     void moveLeft()  { mMovement.x = -1; mDirection = LEFT;  }
     void moveRight() { mMovement.x =  1; mDirection = RIGHT; }
 
     void resetMovement() { mMovement = { 0.0f, 0.0f }; }
-
-
 
     Vector2     getPosition()              const { return mPosition;              }
     Vector2     getMovement()              const { return mMovement;              }
@@ -114,16 +113,21 @@ public:
     Vector2     getSpriteSheetDimensions() const { return mSpriteSheetDimensions; }
     Texture2D   getTexture()               const { return mTexture;               }
     TextureType getTextureType()           const { return mTextureType;           }
-    GameStatus  getGameStatus()             const { return mGameStatus;            }
+    Direction   getDirection()             const { return mDirection;             }
     int         getFrameSpeed()            const { return mFrameSpeed;            }
+    float       getJumpingPower()          const { return mJumpingPower;          }
+    bool        isJumping()                const { return mIsJumping;             }
     int         getSpeed()                 const { return mSpeed;                 }
     float       getAngle()                 const { return mAngle;                 }
-    float       getFuel()                  const { return mFuel;                  }
+    EntityType  getEntityType()            const { return mEntityType;            }
+    AIType      getAIType()                const { return mAIType;                }
+    AIState     getAIState()               const { return mAIState;               }
+
     
     bool isCollidingTop()    const { return mIsCollidingTop;    }
     bool isCollidingBottom() const { return mIsCollidingBottom; }
 
-    std::vector<int> getAnimationIndices() const { return mAnimationIndices; }
+    std::map<Direction, std::vector<int>> getAnimationAtlas() const { return mAnimationAtlas; }
 
     void setPosition(Vector2 newPosition)
         { mPosition = newPosition;                 }
@@ -143,22 +147,22 @@ public:
         { mSpeed  = newSpeed;                      }
     void setFrameSpeed(int newSpeed)
         { mFrameSpeed = newSpeed;                  }
+    void setJumpingPower(float newJumpingPower)
+        { mJumpingPower = newJumpingPower;         }
     void setAngle(float newAngle) 
         { mAngle = newAngle;                       }
-    void setGameStatus(GameStatus newStatus) 
-        { mGameStatus = newStatus;                 }    
+    void setEntityType(EntityType entityType)
+        { mEntityType = entityType;                }
+    void setDirection(Direction newDirection)
+    { 
+        mDirection = newDirection;
 
-    void setFuel(float newFuel) 
-        { mFuel = newFuel;                         }
-    
-    // create a moving platform 
-    void makeMovingPlatform(float speed, float distance);
-    // update movement for the moving platform
-    void updatePlatform(float deltaTime);
-
-    // use fuel
-    void useFuel(float amt) { mFuel -= amt; }
-    bool hasFuel() const { return mFuel > 0.0f; }
+        if (mTextureType == ATLAS) mAnimationIndices = mAnimationAtlas.at(mDirection);
+    }
+    void setAIState(AIState newState)
+        { mAIState = newState;                     }
+    void setAIType(AIType newType)
+        { mAIType = newType;                       }
 };
 
 #endif // ENTITY_CPP
