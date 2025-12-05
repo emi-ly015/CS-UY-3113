@@ -6,7 +6,7 @@ UNAME_S := $(shell uname -s)
 # ------------------------------------------------------------
 #  Source files
 # ------------------------------------------------------------
-SRCS = final/main.cpp final/CS3113/*.cpp  # entities
+SRCS = final_project/main.cpp final_project/CS3113/*.cpp  # entities
 
 # ------------------------------------------------------------
 #  Target name
