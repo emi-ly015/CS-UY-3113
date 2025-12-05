@@ -26,6 +26,7 @@ void LevelA::initialise()
    shopOpen = false;
    mMissionOpen = true;
    keysOpen = false;
+   mGameState.plantEatenEffect = false;
 
    mPlants.clear();
    mTrees.clear();
@@ -190,7 +191,7 @@ void LevelA::initialise()
       mGameState.player->getScale().x / 3.5f,
       mGameState.player->getScale().y / 3.0f
    });
-   mGameState.player->setSpeed(200.0f);
+   mGameState.player->setSpeed(75.0f);
 
    /*
       ----------- CAMERA -----------
@@ -707,7 +708,7 @@ void LevelA::updatePlanting()
    {
       Vector2 center = getDirtCenter(mGameState.player->getPosition());
       if (!plantExistsAt(center))
-     {
+      {
          int slotIndex = selectedSlot - 1;
          if (slotIndex < 0 || slotIndex >= 8) return;
 
@@ -815,7 +816,7 @@ void LevelA::updateHarvesting()
       for (int i =0; i < mPlants.size(); i++)
       {
          if (mPlants[i].harvested) continue;
-         // must be grown and standing on it
+         // plant must be grown and player standing on it
          if (mPlants[i].growthPhase == 3 &&
             fabs(mPlants[i].position.x - tilePos.x) < 1.0f &&
             fabs(mPlants[i].position.y - tilePos.y) < 1.0f)
@@ -918,7 +919,9 @@ void LevelA::updateTreeCollection()
          addToInventory(2, 3, peaches);
          tree.frame = 12;
          if (peaches >= 3) mission_peaches = true;
-      } else if (tree.treeType == 1) addToInventory(3, 1, wood);  
+      } 
+      // wood tree
+      else if (tree.treeType == 1) addToInventory(3, 1, wood);  
 
       tree.fruitHarvested = false;
       tree.collected = true;
@@ -1041,7 +1044,7 @@ void LevelA::drawInventoryItems()
 
 int LevelA::getNextEmptySlot()
 {
-   // reserve slots 0–3 for seed bags
+   // reserve slots 0–2 for seed bags
    for (int i = 0; i < 8; i++)
    {
       if (inventory[i] == -1) return i;

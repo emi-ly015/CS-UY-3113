@@ -24,6 +24,7 @@ void LevelB::initialise()
    shopOpen = false;
    mMissionOpen = true;
    keysOpen = false;
+   mGameState.plantEatenEffect = false;
 
    mPlants.clear();
    mTrees.clear();
@@ -186,7 +187,7 @@ void LevelB::initialise()
       mGameState.player->getScale().x / 3.5f,
       mGameState.player->getScale().y / 3.0f
    });
-   mGameState.player->setSpeed(200.0f);
+   mGameState.player->setSpeed(75.0f);
 
    /*
       ----------- CAMERA -----------

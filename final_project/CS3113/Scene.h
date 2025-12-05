@@ -25,7 +25,7 @@ struct GameState
 
     Camera2D camera;
 
-    bool plantEatenEffect;
+    bool plantEatenEffect = false;
     int nextSceneID;
 };
 

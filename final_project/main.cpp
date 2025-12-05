@@ -47,12 +47,17 @@ Menu *gMenu     = nullptr;
 
 int gLastLevelID = 1;
 
+Music* gCurrentMusic = nullptr;
 Music gLev1BGM;
 Music gLev2BGM;
 Music gLev3BGM;
 Sound gShovelSound;
 Sound gAxeSound;
 Sound gWaterSound;
+
+bool gLev1BGMStarted;
+bool gLev2BGMStarted;
+bool gLev3BGMStarted;
 
 ShaderProgram gShader;
 Effects *gEffects = nullptr;
@@ -76,12 +81,6 @@ void switchToScene(Scene *scene)
 {   
     gCurrentScene = scene;
     gCurrentScene->initialise();
-    if (scene == gLevelA) PlayMusicStream(gLev1BGM);
-    else StopMusicStream(gLev1BGM);
-    if (scene == gLevelB) PlayMusicStream(gLev2BGM);
-    else StopMusicStream(gLev2BGM);
-    if (scene == gLevelC) PlayMusicStream(gLev3BGM);
-    else StopMusicStream(gLev3BGM);
 }
 
 void initialise()
@@ -198,9 +197,6 @@ void update()
     float ticks = (float) GetTime();
     float deltaTime = ticks - gPreviousTicks;
     gPreviousTicks  = ticks;
-    UpdateMusicStream(gLev1BGM);
-    UpdateMusicStream(gLev2BGM);
-    UpdateMusicStream(gLev3BGM);
     
     if (gCurrentScene == gMenu)
     {
@@ -219,6 +215,35 @@ void update()
     while (deltaTime >= FIXED_TIMESTEP)
     {
         gCurrentScene->update(FIXED_TIMESTEP);
+
+        int targetTrack = -1;
+        if (gCurrentScene == gLevelA) targetTrack = 1;
+        else if (gCurrentScene == gLevelB) targetTrack = 2;
+        else if (gCurrentScene == gLevelC) targetTrack = 3;
+        // start each track only once 
+        if (targetTrack == 1 && !gLev1BGMStarted)
+        {
+            PlayMusicStream(gLev1BGM);
+            gLev1BGMStarted = true;
+        } 
+        if (targetTrack == 2 && !gLev2BGMStarted)
+        {
+            PlayMusicStream(gLev2BGM);
+            gLev2BGMStarted = true;
+        } 
+        if (targetTrack == 3 && !gLev3BGMStarted) 
+        {
+            PlayMusicStream(gLev3BGM);
+            gLev3BGMStarted = true;
+        }
+        
+        SetMusicVolume(gLev1BGM, (targetTrack == 1) ? 0.4f : 0.0f);
+        SetMusicVolume(gLev2BGM, (targetTrack == 2) ? 0.4f: 0.0f);
+        SetMusicVolume(gLev3BGM, (targetTrack == 3) ? 0.4f : 0.0f);
+
+        UpdateMusicStream(gLev1BGM);
+        UpdateMusicStream(gLev2BGM);
+        UpdateMusicStream(gLev3BGM);
 
         if (gCurrentScene->getState().plantEatenEffect)
         {

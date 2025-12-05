@@ -25,6 +25,7 @@ void LevelC::initialise()
    shopOpen = false;
    mMissionOpen = true;
    keysOpen = false;
+   mGameState.plantEatenEffect = false;
 
    mPlants.clear();
    mTrees.clear();
@@ -187,7 +188,7 @@ playerFace = LoadTexture("assets/project5_assets/emotes3.png");
       mGameState.player->getScale().x / 3.5f,
       mGameState.player->getScale().y / 3.0f
    });
-   mGameState.player->setSpeed(200.0f);
+   mGameState.player->setSpeed(75.0f);
 
    /*
       ----------- CAMERA -----------
