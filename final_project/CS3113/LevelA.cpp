@@ -780,7 +780,7 @@ void LevelA::updatePlantGrowth(float deltaTime)
       if (mPlants[i].watered)
       {
          mPlants[i].growthTimer += deltaTime;
-         // growth happens every 10 seconds
+         // growth happens every 5-8 seconds
          if (mPlants[i].growthTimer >= 10.0f && mPlants[i].growthPhase < 3)
          {
             mPlants[i].growthPhase++;
