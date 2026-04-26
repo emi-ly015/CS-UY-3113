@@ -51,7 +51,7 @@ Several core game development concepts are explored throughout these projects:
 - Combining multiple sprites into a layered scene  
 
 
-Run locally:
+How to Run:
 
 ```bash
 cd projects/project_1
@@ -71,7 +71,7 @@ make run
 - Game-over and restart states  
 
 
-Run locally:
+How to Run:
 
 ```bash
 cd projects/project_2
@@ -92,7 +92,8 @@ make run
 - Collision-based landing validation  
 - Moving platforms and environmental challenges  
 
-Run locally:
+
+How to Run:
 
 ```bash
 cd projects/project_3
@@ -113,7 +114,8 @@ make run
 - Game state transitions (win/lose conditions)  
 - Audio integration for music and sound effects 
 
-Run locally:
+
+How to Run:
 
 ```bash
 cd projects/project_4
@@ -139,7 +141,8 @@ make run
 - UI systems for inventory, missions, and player feedback  
 - Scene transitions including menu, win, and lose states 
 
-Run locally:
+
+How to Run:
 
 ```bash
 cd final_project
@@ -179,7 +182,7 @@ sudo apt install build-essential libraylib-dev pkg-config
 ### Clone the Repository
 
 ```bash
-git clone https://github.com/emi-ly015/<CS-UY-3113>.git
+git clone https://github.com/emi-ly015/CS-UY-3113.git
 cd CS-UY-3113
 ```
 
