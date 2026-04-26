@@ -179,7 +179,7 @@ sudo apt install build-essential libraylib-dev pkg-config
 ### Clone the Repository
 
 ```bash
-git clone https://github.com/emi-ly015/<your-repo-name>.git
+git clone https://github.com/emi-ly015/<CS-UY-3113>.git
 cd CS-UY-3113
 ```
 
