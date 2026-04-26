@@ -8,23 +8,18 @@ The work emphasizes building reusable systems and understanding how real-time ap
 
 The repository is divided into multiple projects, each focusing on a specific aspect of game development:
 
-- **Project 1**  
-  Focuses on movement, rotation, and scaling to build a dynamic scene.
+- **Project 1 :** Focuses on movement, rotation, and scaling to build a dynamic scene.
 
-- **Project 2**  
-  Builds interactive gameplay through a Pong-inspired game with collision handling
+- **Project 2 :** Builds interactive gameplay through a Pong-inspired game with collision handling
 
-- **Project 3**  
-  Explores gravity, velocity, and resource-based mechanics through a Lunar-lander-inspired game
+- **Project 3 :** Explores gravity, velocity, and resource-based mechanics through a Lunar-lander-inspired game
 
-- **Project 4**  
-  Introduces structured game architecture thought a multi-scene platformer with camera tracking, levels, and AI
+- **Project 4 :** Introduces structured game architecture thought a multi-scene platformer with camera tracking, levels, and AI
 
-- **Final Project**  
-  Farming simulator combining gameplay systems and world interaction
+- **Final Project :** Farming simulator combining gameplay systems and world interaction
 
 
-## Technical Themes
+## Key Concepts
 
 Several core game development concepts are explored throughout these projects:
 
